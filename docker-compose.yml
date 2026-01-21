@@ -4,7 +4,7 @@ services:
     container_name: mysql_8
     environment:
       MYSQL_ROOT_PASSWORD: rootpassword
-      MYSQL_DATABASE: demo
+      MYSQL_DATABASE: backend_db
       MYSQL_USER: user
       MYSQL_PASSWORD: password
     ports:
@@ -17,3 +17,6 @@ services:
       MYSQL_ROOT_PASSWORD: rootpassword
     ports:
       - "8080:80"
+
+volumes:
+  db_data:

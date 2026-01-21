@@ -3,7 +3,6 @@ import { Controller, Get, Param, Body, Post, HttpCode, HttpStatus } from "@nestj
 
 @Controller("groupe")
 export class ResourceGroupeController {
-    constructor(private readonly resourceGroupeService) {}
     
     @Get(":id")
     postMessage(){
