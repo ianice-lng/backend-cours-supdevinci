@@ -7,6 +7,8 @@ import { AUTH_REPOSITORY } from "./auth.repository.interface";
 import { AuthRepository } from "./auth.repository";
 import { PASSWORD_HASHER } from "./interface/password-hasher.interface";
 import { PasswordHasherService } from "./password-hasher.service";
+import { JWT_SERVICE } from "./interface/jwt.interface";
+import { JWTService } from "./jwt.service";
 
 @Module({
     imports: [TypeOrmModule.forFeature([
@@ -15,7 +17,8 @@ import { PasswordHasherService } from "./password-hasher.service";
     controllers: [AuthController],
     providers: [AuthService, 
         {provide: AUTH_REPOSITORY, useClass: AuthRepository},
-        {provide: PASSWORD_HASHER, useClass: PasswordHasherService}
+        {provide: PASSWORD_HASHER, useClass: PasswordHasherService},
+        {provide: JWT_SERVICE, useClass: JWTService}
     ],
 })
 export class AuthModule {}
