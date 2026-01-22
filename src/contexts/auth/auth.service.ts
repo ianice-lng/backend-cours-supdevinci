@@ -14,18 +14,19 @@ export class AuthService {
     @Inject(JWT_SERVICE) private readonly jwtService: JWTServiceInterface,
   ) {}
 
-  async register (dto : RegisterDTO): Promise<void> {
+  async register (dto : RegisterDTO): Promise<boolean | string> {
     const emailExists =  await this.authRepository.checkEmailExists(dto.email);
     if (emailExists) {
-      throw new Error('Email already in use');
+      return "Email already in use";
     }
     const hashedPassword = await this.passwordHasher.hash(dto.password);
     const userCredentials = new UserCredentialsEntity();
     userCredentials.email = dto.email;
-
+    userCredentials.username = dto.username;
     userCredentials.passwordHash = hashedPassword;
     await this.authRepository.createCredentials(userCredentials);
 
+    return true;
   }
 
   async login (dto: LoginDTO): Promise<object | null> {
@@ -38,8 +39,8 @@ export class AuthService {
       return null;
     }
 
-    const acces_token = await this.jwtService.generateToken({ userId: userCredentials.id });
-    const refresh_token = await this.jwtService.generateToken({ userId: userCredentials.id }, '7d');
+    const acces_token = await this.jwtService.generateToken({ userCredentials});
+    const refresh_token = await this.jwtService.generateToken({ userCredentials }, '7d');
 
     return { acces_token, refresh_token };
   }

@@ -2,23 +2,19 @@ import { Body, Controller, Get, HttpCode, HttpStatus, Post, Req } from "@nestjs/
 import { LoginDTO, RegisterDTO } from "./types/auth.dto";
 import { UserLoggerPresenter } from "./types/auth.presenter";
 import { plainToInstance } from "class-transformer";
+import { AuthService } from "./auth.service";
 
 @Controller("auth")
 export class AuthController {
-    constructor() {}
+    constructor(private authService: AuthService) {}
     @Post("login")
     @HttpCode(HttpStatus.OK)
     login(@Body() body: LoginDTO){
-        const DatabaseResult = {
-            username: "Ianice",
-            password: "test1234!"
-        }
-
-        return plainToInstance(UserLoggerPresenter, DatabaseResult, { excludeExtraneousValues: true });
+        return this.authService.login(body);
     }
     @Post("register")
     @HttpCode(HttpStatus.OK)
-    register(@Body() body: RegisterDTO){
-        return null;
+    register(@Body() body: RegisterDTO): Promise<string | boolean> {
+        return this.authService.register(body);
     }
 }

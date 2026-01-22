@@ -13,6 +13,9 @@ export class UserCredentialsEntity {
     @Column({name: "email", type: "varchar", length: 255})
     email: string;
 
+    @Column({ name: "username", type: "varchar", length: 100 })
+    username: string;
+
     @CreateDateColumn({ name: "created_at" })
     createdAt: Date;
 
