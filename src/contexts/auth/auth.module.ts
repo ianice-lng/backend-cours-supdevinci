@@ -9,10 +9,11 @@ import { PASSWORD_HASHER } from "./interface/password-hasher.interface";
 import { PasswordHasherService } from "./password-hasher.service";
 import { JWT_SERVICE } from "./interface/jwt.interface";
 import { JWTService } from "./jwt.service";
+import { UserProfileEntity } from "./entities/user_profile.entities";
 
 @Module({
     imports: [TypeOrmModule.forFeature([
-        UserCredentialsEntity
+        UserCredentialsEntity, UserProfileEntity
     ])],
     controllers: [AuthController],
     providers: [AuthService, 

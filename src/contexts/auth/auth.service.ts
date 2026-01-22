@@ -26,6 +26,8 @@ export class AuthService {
     userCredentials.passwordHash = hashedPassword;
     await this.authRepository.createCredentials(userCredentials);
 
+    const userProfile = await this.authRepository.createProfile(dto.username, userCredentials.id);
+    console.log(userProfile);
     return true;
   }
 

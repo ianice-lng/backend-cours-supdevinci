@@ -1,2 +1,6 @@
-import { IsEmail, IsStrongPassword } from "class-validator"
+import { IsString } from "class-validator";
 
+export class ConversationDTO {
+    @IsString()
+    conversationId: string
+}

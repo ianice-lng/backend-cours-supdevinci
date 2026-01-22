@@ -1,6 +1,6 @@
 import { UserCredentialsEntity } from "src/contexts/auth/entities/user_credentials.entities";
+import { UserProfileEntity } from "src/contexts/auth/entities/user_profile.entities";
 import { Column, CreateDateColumn, Entity, Index, JoinTable, ManyToMany, PrimaryGeneratedColumn } from "typeorm";
-
 @Entity("conversation")
 export class ConversationEntity {
     @PrimaryGeneratedColumn("uuid")
@@ -12,7 +12,7 @@ export class ConversationEntity {
     @CreateDateColumn({ name: "created_at" })
     createdAt: Date;
 
-    @ManyToMany(() => UserCredentialsEntity)
+    @ManyToMany(() => UserProfileEntity)
     @JoinTable({
         name: "conversation_participants",
         joinColumn: { name: "conversation_id", referencedColumnName: "id" },

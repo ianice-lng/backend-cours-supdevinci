@@ -8,10 +8,7 @@ export class UserProfileEntity {
     id: string;
 
     @Column({ type: "varchar", length: 100 })
-    lastname: string;
-
-    @Column({ type: "varchar", length: 100 })
-    firstname: string;
+    username: string;
 
     @Column({ type: "text", nullable: true })
     bio: string;

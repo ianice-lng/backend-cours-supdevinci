@@ -12,4 +12,6 @@ export class RegisterDTO {
     email: string
     @IsStrongPassword()
     password: string
+    @IsString()
+    username: string
 }

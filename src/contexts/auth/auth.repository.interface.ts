@@ -6,6 +6,10 @@ export interface IAuthRepository {
     findCredentialsByEmail(email: string): Promise<UserCredentialsEntity | null>;
     createCredentials(entity: UserCredentialsEntity): Promise<UserCredentialsEntity>;
     checkEmailExists(email: string): Promise<boolean>;
-    
+    createProfile(username: string, userCredentialsId: string): Promise<any>;
+    findProfileByCredentialsId(userCredentialsId: string): Promise<any>;
+    updateProfile(entity: any): Promise<any>;
+    deleteProfile(entity: any): Promise<void>;
+    findProfileByUsername(username: string): Promise<any>;
 
 }
