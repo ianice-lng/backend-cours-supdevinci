@@ -10,6 +10,7 @@ import { PasswordHasherService } from "./password-hasher.service";
 import { JWT_SERVICE } from "./interface/jwt.interface";
 import { JWTService } from "./jwt.service";
 import { UserProfileEntity } from "./entities/user_profile.entities";
+import { SendUserRegisteredEventHandler } from "./handler/send-user-registered.handler";
 
 @Module({
     imports: [TypeOrmModule.forFeature([
@@ -17,6 +18,7 @@ import { UserProfileEntity } from "./entities/user_profile.entities";
     ])],
     controllers: [AuthController],
     providers: [AuthService, 
+        SendUserRegisteredEventHandler,
         {provide: AUTH_REPOSITORY, useClass: AuthRepository},
         {provide: PASSWORD_HASHER, useClass: PasswordHasherService},
         {provide: JWT_SERVICE, useClass: JWTService}

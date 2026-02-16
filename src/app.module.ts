@@ -9,6 +9,9 @@ import { ConversationModule } from './contexts/conversation/conversation.module'
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { join } from 'path';
+import { eventModule } from './core/events/event.module';
+import { EventEmitter } from 'stream';
+import { EventEmitterModule } from '@nestjs/event-emitter';
 
 @Module({
   imports: [
@@ -43,6 +46,8 @@ import { join } from 'path';
     MessageModule,
     ResourceModule,
     ConversationModule,
+    eventModule, 
+    EventEmitterModule.forRoot()
   ],
   controllers: [AppController],
   providers: [AppService],

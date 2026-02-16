@@ -9,6 +9,8 @@ import { JWT_SERVICE, JWTServiceInterface } from './interface/jwt.interface';
 import { JWTService } from './jwt.service';
 import { DomainError } from 'src/core/errors/domain-error';
 import { EmailAlreadyInUseError, InvalidCredentialsError, InvalidPasswordError, UserNotFoundError } from './errors/auth.errors';
+import { EVENT_BUS, EventBusPort } from 'src/core/events/event-bus.port';
+import { UserRegisteredEvent } from './events/user-registered.event';
 
 @Injectable()
 export class AuthService {
@@ -16,6 +18,7 @@ export class AuthService {
     @Inject(AUTH_REPOSITORY) private readonly authRepository: IAuthRepository,
     @Inject(PASSWORD_HASHER) private readonly passwordHasher: PasswordHasherService,
     @Inject(JWT_SERVICE) private readonly jwtService: JWTService,
+    @Inject(EVENT_BUS) private readonly eventBus: EventBusPort
   ) {}
 
   async register (dto : RegisterDTO): Promise<boolean | string> {
@@ -34,7 +37,12 @@ export class AuthService {
     await this.authRepository.createCredentials(userCredentials);
 
     const userProfile = await this.authRepository.createProfile(dto.username, userCredentials.id);
-    return true;
+    await this.eventBus.publish(UserRegisteredEvent.create({
+      userId: userCredentials.id,
+      username: dto.username,
+      email: dto.email
+    }));
+    return userProfile;
   }
 
   async login (dto: LoginDTO): Promise<object | null> {
