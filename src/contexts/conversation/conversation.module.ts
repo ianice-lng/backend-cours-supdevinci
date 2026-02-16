@@ -5,6 +5,8 @@ import { ConversationEntity } from "./entities/conversation.entities";
 import { TypeOrmModule } from "@nestjs/typeorm";
 import { CONVERSATION_REPOSITORY } from "./conversation.repository.interface";
 import { ConversationRepository } from "./conversation.repository";
+import { JWTService } from "../auth/jwt.service";
+import { JwtAuthGuard } from "./guards/conversation.guard";
 
 @Module({
     imports: [TypeOrmModule.forFeature([
@@ -12,7 +14,8 @@ import { ConversationRepository } from "./conversation.repository";
     ])],
     controllers: [ConversationController],
     providers: [ConversationService,
-        { provide: CONVERSATION_REPOSITORY, useClass: ConversationRepository }
+        { provide: CONVERSATION_REPOSITORY, useClass: ConversationRepository },
+        JWTService, JwtAuthGuard
     ],
 })
 export class ConversationModule {}

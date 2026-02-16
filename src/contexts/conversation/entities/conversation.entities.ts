@@ -7,6 +7,9 @@ export class ConversationEntity {
     id: string;
 
     @Column({ type: "varchar", nullable: true })
+    userId: string;
+
+    @Column({ type: "varchar", nullable: true })
     name: string;
 
     @CreateDateColumn({ name: "created_at" })

@@ -10,9 +10,11 @@ export class ConversationRepository {
         private readonly conversationRepository: Repository<ConversationEntity>,
     ) { }
 
-    async createConversation(title: string): Promise<ConversationEntity> {
+    async createConversation(): Promise<ConversationEntity> {
         const entity = new ConversationEntity();
-        entity.name = title
+        return entity;
+    }
+    async saveConversation(entity: ConversationEntity): Promise<ConversationEntity> {
         return this.conversationRepository.save(entity);
     }
 

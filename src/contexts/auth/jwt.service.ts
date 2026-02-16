@@ -8,6 +8,10 @@ export class JWTService implements JWTServiceInterface{
     }
 
     async verifyToken(token: string): Promise<object | null> {
-        return jwt.verify(token, 'your-secret-key') as object;
+        try {
+            return jwt.verify(token, 'your-secret-key') as object;
+        } catch (error) {
+            return null;
+        }
     }
 }
