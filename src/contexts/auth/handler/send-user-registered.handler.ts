@@ -12,6 +12,6 @@ export class SendUserRegisteredEventHandler {
     async handle(payload: any){
         console.log('User registered event received with payload:', payload);
         console.log('Sending welcome email to:', payload.email);
-        this.mailerService.publish('Welcome to our app!', payload.email);
+        this.mailerService.send(payload.email, 'Welcome to our app!', 'Welcome to our app!');
     }
 }
