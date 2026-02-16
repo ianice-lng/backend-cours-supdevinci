@@ -8,7 +8,8 @@ import * as jwt from 'jsonwebtoken';
 import { JWT_SERVICE, JWTServiceInterface } from './interface/jwt.interface';
 import { JWTService } from './jwt.service';
 import { DomainError } from 'src/core/errors/domain-error';
-import { EmailAlreadyInUseError, InvalidCredentialsError, InvalidPasswordError } from './errors/auth.errors';
+import { EmailAlreadyInUseError, InvalidCredentialsError, InvalidPasswordError, UserNotFoundError } from './errors/auth.errors';
+
 @Injectable()
 export class AuthService {
   constructor(
@@ -60,6 +61,18 @@ export class AuthService {
     return { acces_token, refresh_token };
   }
 
+  async getProfile(id: string): Promise<any> {
+
+    const profile = await this.authRepository.findProfileByCredentialsId(id);
+    if (!profile) {
+      throw new UserNotFoundError({
+        fields: {
+          id: [id]
+        }
+      });
+    }
+    return profile;
+  }
  
 }
 

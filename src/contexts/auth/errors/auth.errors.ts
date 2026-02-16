@@ -67,3 +67,20 @@ export class InvalidPasswordError extends DomainError{
         this.fields = params.fields;
     }
 }
+
+export class UserNotFoundError extends DomainError{
+    public readonly fields: Record<string, string[]>;
+    constructor(params: {
+        fields: Record<string, string[]>
+        }) {
+        super({
+            code: "USER_NOT_FOUND",
+            message: "User not found",
+            statusCode: 404,
+            fields: {},
+            details: {}
+        });
+
+        this.fields = params.fields;
+    }
+}

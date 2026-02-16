@@ -16,7 +16,7 @@ export class AuthRepository implements IAuthRepository{
 
     async findCredentialsByEmail(email: string) : Promise<UserCredentialsEntity | null> {
         const entity = await this.credentialsRepository.findOne({ where: { email } });
-
+        
         return entity;
     }
 
@@ -34,7 +34,7 @@ export class AuthRepository implements IAuthRepository{
 
     async findCredentialsById(id: string): Promise<UserCredentialsEntity | null> {
         const entity = await this.credentialsRepository.findOne({ where: { id } });
-
+       
         return entity;
     }
 

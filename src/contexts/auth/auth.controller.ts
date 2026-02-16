@@ -17,4 +17,10 @@ export class AuthController {
     register(@Body() body: RegisterDTO): Promise<string | boolean> {
         return this.authService.register(body);
     }
+    @Get("profile/:id")
+    @HttpCode(HttpStatus.OK)
+    getProfile(@Req() req): Promise<any> {
+        const id = req.params.id;
+        return this.authService.getProfile(id);
+    }
 }
