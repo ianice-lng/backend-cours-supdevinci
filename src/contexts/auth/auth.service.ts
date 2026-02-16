@@ -8,6 +8,7 @@ import * as jwt from 'jsonwebtoken';
 import { JWT_SERVICE, JWTServiceInterface } from './interface/jwt.interface';
 import { JWTService } from './jwt.service';
 import { DomainError } from 'src/core/errors/domain-error';
+import { EmailAlreadyInUseError, InvalidCredentialsError, InvalidPasswordError } from './errors/auth.errors';
 @Injectable()
 export class AuthService {
   constructor(
@@ -19,7 +20,11 @@ export class AuthService {
   async register (dto : RegisterDTO): Promise<boolean | string> {
     const emailExists =  await this.authRepository.checkEmailExists(dto.email);
     if (emailExists) {
-      return "Email already in use";
+      throw new EmailAlreadyInUseError({
+        fields: {
+          email: [dto.email]
+        }
+      });
     }
     const hashedPassword = await this.passwordHasher.hash(dto.password);
     const userCredentials = new UserCredentialsEntity();
@@ -28,18 +33,25 @@ export class AuthService {
     await this.authRepository.createCredentials(userCredentials);
 
     const userProfile = await this.authRepository.createProfile(dto.username, userCredentials.id);
-    console.log(userProfile);
     return true;
   }
 
   async login (dto: LoginDTO): Promise<object | null> {
     const userCredentials = await this.authRepository.findCredentialsByEmail(dto.email);
     if (!userCredentials) {
-      return null
+      throw new InvalidCredentialsError({
+        fields: {
+          email: [dto.email]
+        }
+      });
     }
 
     if (!await this.passwordHasher.compare(dto.password, userCredentials.passwordHash)) {
-      return null
+      throw new InvalidPasswordError({
+        fields: {
+          password: []
+        }
+      });
     }
 
     const acces_token = await this.jwtService.generateToken({ userCredentials});

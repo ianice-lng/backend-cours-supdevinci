@@ -1,4 +1,4 @@
-import { Body, Controller, Get, HttpCode, HttpStatus, Param, Post, Put } from "@nestjs/common";
+import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Post, Put } from "@nestjs/common";
 import { ConversationService } from "./conversation.service";
 import { ConversationEntity } from "./entities/conversation.entities";
 import { ConversationDTO, CreateConversationDTO, UpdateConversationDTO } from "./types/conversation.dto";
@@ -23,12 +23,19 @@ export class ConversationController {
 
     @Put()
     @HttpCode(HttpStatus.OK)
-    updateConversation(@Body() body: UpdateConversationDTO): Promise<ConversationEntity | any>{
+    updateConversation(@Body() body: UpdateConversationDTO): Promise<ConversationEntity | string | null>{
         return this.conversationService.updateConversation(body)
     }
 
     @Get("/:id")
-    getConversationById(@Param("id") id: string): Promise<ConversationEntity | null>{
+    getConversationById(@Param("id") id: string): Promise<ConversationEntity | string | null>{
         return this.conversationService.findConversationById(id)
+    }
+
+    @Delete("/:id")
+    @HttpCode(HttpStatus.OK)
+    deleteConversation(@Param("id") id: string): Promise<boolean>{
+        return this.conversationService.deleteConversation({id})
+        
     }
 }
