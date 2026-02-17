@@ -1,2 +1,2 @@
-faire un système de template, 
-avec des 
+Faire un système avec websocket, 
+Envoyer un mail a l'utilisateur si il n'est pas connecté au socket. 
