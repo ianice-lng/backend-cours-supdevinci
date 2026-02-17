@@ -1,17 +1,26 @@
-import { IsEmail, IsString, IsStrongPassword } from "class-validator"
+import { ApiProperty } from '@nestjs/swagger';
+import { IsEmail, IsString, IsStrongPassword } from "class-validator";
 
 export class LoginDTO {
-    @IsEmail()
-    email: string
-    @IsStrongPassword()
-    password: string
+  @ApiProperty({ example: 'john@example.com' })
+  @IsEmail()
+  email: string;
+
+  @ApiProperty({ example: 'Password123!' })
+  @IsStrongPassword()
+  password: string;
 }
 
 export class RegisterDTO {
-    @IsEmail()
-    email: string
-    @IsStrongPassword()
-    password: string
-    @IsString()
-    username: string
+  @ApiProperty({ example: 'john@example.com' })
+  @IsEmail()
+  email: string;
+
+  @ApiProperty({ example: 'Password123!' })
+  @IsStrongPassword()
+  password: string;
+
+  @ApiProperty({ example: 'JohnDoe' })
+  @IsString()
+  username: string;
 }
