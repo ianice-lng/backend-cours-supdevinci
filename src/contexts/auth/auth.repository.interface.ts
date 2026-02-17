@@ -1,4 +1,5 @@
 import { UserCredentialsEntity } from "./entities/user_credentials.entities"
+import { UserProfileEntity } from "./entities/user_profile.entities";
 
 export const AUTH_REPOSITORY = Symbol('AUTH_REPOSITORY');
 
@@ -11,5 +12,5 @@ export interface IAuthRepository {
     updateProfile(entity: any): Promise<any>;
     deleteProfile(entity: any): Promise<void>;
     findProfileByUsername(username: string): Promise<any>;
-
+    findProfileByCredentialsIds(ids: string[]): Promise<UserProfileEntity[]>;
 }

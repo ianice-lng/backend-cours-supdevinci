@@ -19,9 +19,12 @@ export class ConversationRepository {
     }
 
     async findConversationById(id: string): Promise<ConversationEntity | null> {
-        const entity = await this.conversationRepository.findOne({ where: { id } });
-        return entity;
-    }
+        return this.conversationRepository
+            .createQueryBuilder("conversation")
+            .leftJoinAndSelect("conversation.participants", "participants")
+            .where("conversation.id = :id", { id })
+            .getOne();
+        }
 
     async updateConversation(entity: ConversationEntity): Promise<ConversationEntity> {
         return this.conversationRepository.save(entity);
@@ -29,5 +32,13 @@ export class ConversationRepository {
 
     async deleteConversation(entity: ConversationEntity): Promise<void> {
         await this.conversationRepository.remove(entity);
+    }
+    async findAllConversationsByUserId(userId: string): Promise<ConversationEntity[]> {
+        return this.conversationRepository
+            .createQueryBuilder("conversation")
+            .leftJoinAndSelect("conversation.participants", "allParticipants") // ✅ Charge TOUS les participants
+            .innerJoin("conversation.participants", "filterParticipant") // ✅ Filtre les conversations où l'user est présent
+            .where("filterParticipant.userCredentialsId = :userId", { userId })
+            .getMany();
     }
 }

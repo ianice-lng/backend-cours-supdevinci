@@ -1,8 +1,9 @@
 import { Injectable, Inject } from '@nestjs/common';
 import { CONVERSATION_REPOSITORY, IConversationRepository } from './conversation.repository.interface';
-import { ConversationDTO, UpdateConversationDTO } from './types/conversation.dto';
+import { ConversationDTO, CreateConversationDTO, UpdateConversationDTO } from './types/conversation.dto';
 import { ConversationEntity } from './entities/conversation.entities';
 import { ConversationNotFoundError, ConversationUnauthorizedError } from './errors/conversation.errors';
+import { UserProfileEntity } from '../auth/entities/user_profile.entities';
 
 @Injectable()
 export class ConversationService {
@@ -10,16 +11,21 @@ export class ConversationService {
     @Inject(CONVERSATION_REPOSITORY) private readonly conversationRepository: IConversationRepository
   ) {}
 
-  async createConversation(title: string, userId: string): Promise<ConversationEntity> {
+  async createConversation(body: CreateConversationDTO, userId: string, participants: UserProfileEntity[]): Promise<ConversationEntity> {
     const entity = await this.conversationRepository.createConversation();
-    entity.name = title;
-    entity.userId = userId;
+    entity.name = body.title;
+    entity.userConversationCreated = userId;
+    if(participants.length <= 1) throw new ConversationUnauthorizedError({
+        fields: {
+            participants: body.participants
+        }
+    });
+    entity.participants = participants;
     return this.conversationRepository.saveConversation(entity);
   }
 
-  async findConversationById(id: string): Promise<any> {
+  async findConversationById(id: string): Promise<ConversationEntity> {
     const entity = await this.conversationRepository.findConversationById(id);
-    console.log(entity)
     if(!entity) throw new ConversationNotFoundError({
         fields: {
             id: [id]
@@ -37,7 +43,7 @@ export class ConversationService {
         }
     });
     entity.name = body.title
-    if(entity.userId !== userId) throw new ConversationUnauthorizedError({
+    if(entity.userConversationCreated !== userId) throw new ConversationUnauthorizedError({
         fields: {
             id: [body.id]
         }
@@ -60,4 +66,8 @@ export class ConversationService {
     });
     return true;
   }
+
+    async findAllConversationsByUserId(userId: string): Promise<ConversationEntity[]> {
+        return this.conversationRepository.findAllConversationsByUserId(userId);
+    }
 }

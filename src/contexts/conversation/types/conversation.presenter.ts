@@ -1,5 +1,6 @@
 import { Expose } from "class-transformer"
 import { IsString } from "class-validator"
+import { UserProfileEntity } from "src/contexts/auth/entities/user_profile.entities"
 
 
 export class ConversationPresenter {
@@ -15,4 +16,7 @@ export class ConversationPresenter {
     @Expose()
     @IsString()
     title: string
+
+    @Expose()
+    participants: UserProfileEntity[]
 }

@@ -23,5 +23,6 @@ import { SendUserRegisteredEventHandler } from "./handler/send-user-registered.h
         {provide: PASSWORD_HASHER, useClass: PasswordHasherService},
         {provide: JWT_SERVICE, useClass: JWTService}
     ],
+    exports: [AuthService]
 })
 export class AuthModule {}

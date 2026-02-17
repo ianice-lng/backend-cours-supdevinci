@@ -1,4 +1,5 @@
-import { IsString } from "class-validator";
+import { IsArray, isString, IsString } from "class-validator";
+import { isStringObject } from "util/types";
 
 export class ConversationDTO {
     @IsString()
@@ -8,6 +9,10 @@ export class ConversationDTO {
 export class CreateConversationDTO {
     @IsString()
     title: string
+    
+    @IsArray()
+    @IsString({ each: true })
+    participants: string[]
 }
 
 export class UpdateConversationDTO{

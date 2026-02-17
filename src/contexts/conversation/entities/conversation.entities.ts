@@ -7,7 +7,7 @@ export class ConversationEntity {
     id: string;
 
     @Column({ type: "varchar", nullable: true })
-    userId: string;
+    userConversationCreated: string;
 
     @Column({ type: "varchar", nullable: true })
     name: string;
@@ -21,6 +21,6 @@ export class ConversationEntity {
         joinColumn: { name: "conversation_id", referencedColumnName: "id" },
         inverseJoinColumn: { name: "user_id", referencedColumnName: "id" }
     })
-    participants: UserCredentialsEntity[];
+    participants: UserProfileEntity[];
 }
 

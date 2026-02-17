@@ -1,7 +1,7 @@
 import { Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { UserCredentialsEntity } from "./entities/user_credentials.entities";
-import { Repository } from "typeorm";
+import { In, Repository } from "typeorm";
 import { count } from "console";
 import { IAuthRepository } from "./auth.repository.interface";
 import { UserProfileEntity } from "./entities/user_profile.entities";
@@ -57,6 +57,11 @@ export class AuthRepository implements IAuthRepository{
         const entity = await this.profileRepository.findOne({ where: { userCredentialsId } });
 
         return entity;
+    }
+
+    async findProfileByCredentialsIds(ids: string[]): Promise<UserProfileEntity[]> {
+        const profiles = await this.profileRepository.find({ where: { userCredentialsId: In(ids) } });
+        return profiles;
     }
 
     async updateProfile(entity: UserProfileEntity): Promise<UserProfileEntity> {

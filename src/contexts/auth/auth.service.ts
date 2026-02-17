@@ -11,6 +11,7 @@ import { DomainError } from 'src/core/errors/domain-error';
 import { EmailAlreadyInUseError, InvalidCredentialsError, InvalidPasswordError, UserNotFoundError } from './errors/auth.errors';
 import { EVENT_BUS, EventBusPort } from 'src/core/events/event-bus.port';
 import { UserRegisteredEvent } from './events/user-registered.event';
+import { UserProfileEntity } from './entities/user_profile.entities';
 
 @Injectable()
 export class AuthService {
@@ -81,6 +82,11 @@ export class AuthService {
     }
     return profile;
   }
+
+  async findByCredentialsIds(ids: string[]): Promise<UserProfileEntity[]> {
+    return this.authRepository.findProfileByCredentialsIds(ids);
+  }
+
  
 }
 

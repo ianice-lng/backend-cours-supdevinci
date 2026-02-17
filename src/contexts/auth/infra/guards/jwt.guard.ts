@@ -1,7 +1,7 @@
 // guards/jwt-auth.guard.ts
 import { Injectable, CanActivate, ExecutionContext, UnauthorizedException } from '@nestjs/common';
 import { JWTService } from 'src/contexts/auth/jwt.service';
-import { TokenExpiredError, TokenInvalidError, TokenNotFoundError } from '../errors/conversation.errors';
+import { TokenExpiredError, TokenInvalidError, TokenNotFoundError } from '../../../conversation/errors/conversation.errors';
 
 @Injectable()
 export class JwtAuthGuard implements CanActivate {
