@@ -5,8 +5,7 @@ export class MessageDTO {
     @IsString()
     content: string
 
-    @IsNumber()
-    @Transform(({ value }) => Number(value))
-    conversationId: number
+    @IsString()
+    conversationId: string
 
 }
