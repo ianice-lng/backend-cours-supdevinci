@@ -5,6 +5,7 @@ import { plainToInstance } from "class-transformer";
 import { AuthService } from "./auth.service";
 
 @Controller("auth")
+
 export class AuthController {
     constructor(private authService: AuthService) {}
     @Post("login")
@@ -14,7 +15,7 @@ export class AuthController {
     }
     @Post("register")
     @HttpCode(HttpStatus.OK)
-    register(@Body() body: RegisterDTO): Promise<string | boolean> {
+    register(@Body() body: RegisterDTO): Promise<string | boolean | object> {
         return this.authService.register(body);
     }
     @Get("profile/:id")

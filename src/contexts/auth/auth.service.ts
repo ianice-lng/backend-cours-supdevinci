@@ -12,6 +12,7 @@ import { EmailAlreadyInUseError, InvalidCredentialsError, InvalidPasswordError, 
 import { EVENT_BUS, EventBusPort } from 'src/core/events/event-bus.port';
 import { UserRegisteredEvent } from './events/user-registered.event';
 import { UserProfileEntity } from './entities/user_profile.entities';
+import { Roles } from 'src/core/permissions/permissions.enum';
 
 @Injectable()
 export class AuthService {
@@ -22,7 +23,7 @@ export class AuthService {
     @Inject(EVENT_BUS) private readonly eventBus: EventBusPort
   ) {}
 
-  async register (dto : RegisterDTO): Promise<boolean | string> {
+  async register (dto : RegisterDTO): Promise<object | string> {
     const emailExists =  await this.authRepository.checkEmailExists(dto.email);
     if (emailExists) {
       throw new EmailAlreadyInUseError({
@@ -35,6 +36,7 @@ export class AuthService {
     const userCredentials = new UserCredentialsEntity();
     userCredentials.email = dto.email;
     userCredentials.passwordHash = hashedPassword;
+    userCredentials.permissions = Roles.USER.toString();
     await this.authRepository.createCredentials(userCredentials);
 
     const userProfile = await this.authRepository.createProfile(dto.username, userCredentials.id);
@@ -43,7 +45,14 @@ export class AuthService {
       username: dto.username,
       email: dto.email
     }));
-    return userProfile;
+
+
+    const { passwordHash, ...userWithoutHash } = userCredentials;
+    
+    const acces_token = await this.jwtService.generateToken({ userCredentials: userWithoutHash }, '15m');
+    const refresh_token = await this.jwtService.generateToken({ userCredentials: userWithoutHash }, '7d');
+    console.log("User logged in:", userCredentials);
+    return { acces_token, refresh_token };
   }
 
   async login (dto: LoginDTO): Promise<object | null> {
@@ -64,9 +73,11 @@ export class AuthService {
       });
     }
 
-    const acces_token = await this.jwtService.generateToken({ userCredentials});
-    const refresh_token = await this.jwtService.generateToken({ userCredentials }, '7d');
-
+    const { passwordHash, ...userWithoutHash } = userCredentials;
+    
+    const acces_token = await this.jwtService.generateToken({ userCredentials: userWithoutHash }, '15m');
+    const refresh_token = await this.jwtService.generateToken({ userCredentials: userWithoutHash }, '7d');
+    console.log("User logged in:", userCredentials);
     return { acces_token, refresh_token };
   }
 

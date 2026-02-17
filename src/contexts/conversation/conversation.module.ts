@@ -8,12 +8,13 @@ import { ConversationRepository } from "./conversation.repository";
 import { JWTService } from "../auth/jwt.service";
 import { JwtAuthGuard } from "../auth/infra/guards/jwt.guard";
 import { AuthModule } from "../auth/auth.module";
+import { PermissionsModule } from "src/core/permissions/permissions.module";
 
 @Module({
     imports: [TypeOrmModule.forFeature([
         ConversationEntity
     ]), 
-AuthModule],
+AuthModule, PermissionsModule],
     controllers: [ConversationController],
     providers: [ConversationService,
         { provide: CONVERSATION_REPOSITORY, useClass: ConversationRepository },

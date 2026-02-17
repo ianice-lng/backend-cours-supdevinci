@@ -14,6 +14,7 @@ import { EventEmitter } from 'stream';
 import { EventEmitterModule } from '@nestjs/event-emitter';
 import { MailerModule } from './core/mailer/mailer.module';
 import { SendUserRegisteredEventHandler } from './contexts/auth/handler/send-user-registered.handler';
+import { PermissionsModule } from './core/permissions/permissions.module';
 
 @Module({
   imports: [
@@ -50,7 +51,8 @@ import { SendUserRegisteredEventHandler } from './contexts/auth/handler/send-use
     ConversationModule,
     eventModule, 
     EventEmitterModule.forRoot(),
-    MailerModule
+    MailerModule,
+    PermissionsModule
   ],
   controllers: [AppController],
   providers: [AppService],

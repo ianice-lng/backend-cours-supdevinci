@@ -1,5 +1,6 @@
 import { Column, CreateDateColumn, Entity, Index, OneToOne, PrimaryGeneratedColumn } from "typeorm";
 import { UserProfileEntity } from "./user_profile.entities";
+import { Roles } from "src/core/permissions/permissions.enum";
 
 @Entity("user_credentials")
 export class UserCredentialsEntity {
@@ -16,5 +17,8 @@ export class UserCredentialsEntity {
 
     @CreateDateColumn({ name: "created_at" })
     createdAt: Date;
+    
+    @Column({ type: "varchar", default: Roles.USER.toString() })
+    permissions: string;
 }
 

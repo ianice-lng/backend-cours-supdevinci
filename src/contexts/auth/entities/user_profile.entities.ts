@@ -1,6 +1,7 @@
 import { IsString } from "class-validator";
 import { Column, Entity, Index, JoinColumn, OneToOne, PrimaryGeneratedColumn, Unique } from "typeorm";
 import { UserCredentialsEntity } from "./user_credentials.entities";
+import { Roles } from "src/core/permissions/permissions.enum";
 
 @Entity("user_profile") 
 export class UserProfileEntity {
@@ -19,4 +20,6 @@ export class UserProfileEntity {
     @Index({ unique: true })
     @Column({ name: "user_credentials_id", type: "uuid", select: false })
     userCredentialsId: string;
+    
+    
 }
