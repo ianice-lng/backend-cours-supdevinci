@@ -1,7 +1,6 @@
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { ProfileModule } from './contexts/profile/profile.module';
 import { AuthModule } from './contexts/auth/auth.module';
 import { MessageModule } from './contexts/message/message.module';
 import { ResourceModule } from './contexts/resource/resources.groupe.module';
@@ -44,7 +43,6 @@ import { PermissionsModule } from './core/permissions/permissions.module';
         ],
       }),
     }),
-    ProfileModule,
     AuthModule,
     MessageModule,
     ResourceModule,
