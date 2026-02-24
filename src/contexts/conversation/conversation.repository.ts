@@ -33,12 +33,15 @@ export class ConversationRepository {
     async deleteConversation(entity: ConversationEntity): Promise<void> {
         await this.conversationRepository.remove(entity);
     }
-    async findAllConversationsByUserId(userId: string): Promise<ConversationEntity[]> {
+    async findAllConversationsByUserId(userId: string, page: number): Promise<ConversationEntity[]> {
         return this.conversationRepository
             .createQueryBuilder("conversation")
             .leftJoinAndSelect("conversation.participants", "allParticipants") // ✅ Charge TOUS les participants
             .innerJoin("conversation.participants", "filterParticipant") // ✅ Filtre les conversations où l'user est présent
             .where("filterParticipant.userCredentialsId = :userId", { userId })
+            .orderBy("conversation.createdAt", "DESC")
+            .skip((page - 1) * 5)
+            .take(5)
             .getMany();
     }
 }

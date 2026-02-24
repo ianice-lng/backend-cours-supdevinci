@@ -67,7 +67,7 @@ export class ConversationService {
     return true;
   }
 
-    async findAllConversationsByUserId(userId: string): Promise<ConversationEntity[]> {
-        return this.conversationRepository.findAllConversationsByUserId(userId);
+    async findAllConversationsByUserId(userId: string, page: number): Promise<ConversationEntity[]> {
+        return this.conversationRepository.findAllConversationsByUserId(userId, page);
     }
 }

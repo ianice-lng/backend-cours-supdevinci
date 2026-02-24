@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Post, Put, UseGuards, Request } from "@nestjs/common";
+import { Body, Controller, Delete, Get, Query, HttpCode, HttpStatus, Param, Post, Put, UseGuards, Request } from "@nestjs/common";
 import { ConversationService } from "./conversation.service";
 import { ConversationEntity } from "./entities/conversation.entities";
 import { ConversationDTO, CreateConversationDTO, UpdateConversationDTO } from "./types/conversation.dto";
@@ -40,8 +40,8 @@ export class ConversationController {
     }
     @Get("/all-conversations")
     @RequirePermissions(Permissions.CONVERSATION_READ)
-    getAllConversationsByUserId(@Request() req: any): Promise<ConversationEntity[]> {
-        return this.conversationService.findAllConversationsByUserId(req.user.userCredentials.id);
+    getAllConversationsByUserId(@Request() req: any, @Query("page") page: number = 1): Promise<ConversationEntity[]> {
+        return this.conversationService.findAllConversationsByUserId(req.user.userCredentials.id, page);
      }
 
 
