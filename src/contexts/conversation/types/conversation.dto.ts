@@ -8,17 +8,21 @@ export class ConversationDTO {
 
 export class CreateConversationDTO {
   @ApiProperty({ example: 'Ma super conversation' })
+  @IsString()
   title: string;
 
   @ApiProperty({ example: ['uuid-user-1', 'uuid-user-2'] })
+  @IsString({ each: true })
   participants: string[];
 }
 
 export class UpdateConversationDTO {
   @ApiProperty({ example: '550e8400-e29b-41d4-a716-446655440000' })
+  @IsString()
   id: string;
 
   @ApiProperty({ example: 'Nouveau titre' })
+  @IsString()
   title: string;
 }
 
