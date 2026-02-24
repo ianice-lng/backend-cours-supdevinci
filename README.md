@@ -17,3 +17,23 @@ puis, pour lancer le serveur en mode développement, utilisez la commande suivan
 ```bash
 npm run start:dev
 ```
+
+
+
+exemple .env
+```env
+DB_HOST=127.0.0.1
+DB_PORT=3307
+DB_USERNAME=user
+DB_PASSWORD=password
+DB_DATABASE=backend_db
+
+DB_SSL=false
+DB_SYNCHRONIZE=true
+DB_LOGGING=false
+
+
+MAIL_PASSWORD=Azerty.1234
+MAIL_USER=mail@example.com
+MAIL_HOST=smtp.ionos.fr
+```
