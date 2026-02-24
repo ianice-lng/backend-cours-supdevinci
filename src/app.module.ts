@@ -50,7 +50,8 @@ import { PermissionsModule } from './core/permissions/permissions.module';
     eventModule, 
     EventEmitterModule.forRoot(),
     MailerModule,
-    PermissionsModule
+    PermissionsModule,
+    EventEmitterModule.forRoot()
   ],
   controllers: [AppController],
   providers: [AppService],

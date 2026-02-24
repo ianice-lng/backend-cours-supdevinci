@@ -10,6 +10,7 @@ import { JwtAuthGuard } from "../auth/infra/guards/jwt.guard";
 import { PermissionsGuard } from "src/core/permissions/permissions.guard";
 import { PermissionsModule } from "src/core/permissions/permissions.module";
 import { AuthModule } from "../auth/auth.module";
+import { MessageGateway } from "./message.gateway";
 @Module({
     imports: [TypeOrmModule.forFeature([
         MessageEntity
@@ -17,7 +18,7 @@ import { AuthModule } from "../auth/auth.module";
     controllers: [MessageController],
     providers: [MessageService, 
         {provide: MESSAGE_REPOSITORY, useClass: MessageRepository},
-        JWTService, JwtAuthGuard
+        JWTService, JwtAuthGuard, MessageGateway
     ],
 })
 export class MessageModule {}

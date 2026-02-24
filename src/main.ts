@@ -9,7 +9,7 @@ async function bootstrap() {
   app.useGlobalPipes(buildGlobalValidationPipe());
   app.useGlobalFilters(new HttpExceptionFilter()); // -> transforme toutes les erreurs (DomainError, HttpException...) en { code, message, fields?, details? }
   app.useGlobalInterceptors(new ResponseInterceptor()); // -> transforme toutes les reponses OK en { data, meta? }
-  
+  app.enableCors();
   const config = new DocumentBuilder()
     .setTitle('Notes API')
     .setDescription('API documentation for Notes Backend')

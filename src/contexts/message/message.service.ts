@@ -1,11 +1,14 @@
 import { Injectable, Inject } from '@nestjs/common';
 import { MESSAGE_REPOSITORY, IMessageRepository } from './message.repository.interface';
 import { MessageError, MessageNotFoundError, MessageUnauthorizedError } from './errors/message.error';
+import { MessageDTO } from './types/message.dto';
+import { EventEmitter2 } from "@nestjs/event-emitter";
 
 @Injectable()
 export class MessageService {
   constructor(
-    @Inject(MESSAGE_REPOSITORY) private readonly messageRepository: IMessageRepository
+    @Inject(MESSAGE_REPOSITORY) private readonly messageRepository: IMessageRepository,
+    private readonly eventEmitter: EventEmitter2
   ) {}
 
   async createMessage(body: any, userId: string): Promise<any> {
@@ -48,7 +51,11 @@ export class MessageService {
     entity.content = body.content;
     entity.senderId = userId;
     entity.conversationId = body.conversationId;
-    return this.messageRepository.saveMessage(entity);
+
+    const savedMessage = await this.messageRepository.saveMessage(entity);
+
+    this.eventEmitter.emit('message.sent', savedMessage);
+    return savedMessage;
   }
 
   async findMessageById(id: string): Promise<any> {
@@ -96,4 +103,6 @@ export class MessageService {
   async findMessagesByConversationId(conversationId: string, page: number): Promise<any[]> {
     return this.messageRepository.findMessagesByConversationId(conversationId, page);
   }
+
+  
 }
